@@ -11,11 +11,22 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
+mix.js(['resources/js/app.js', 'resources/js/modernizr-custom.js'], 'public/js')
     .sass('resources/sass/app.scss', 'public/css');
 
 mix.browserSync({
     proxy: 'localhost:8000'
 });
+
+if (mix.inProduction()) {
+    mix.version();
+    mix.options({
+        purifyCss: {
+            purifyOptions: {
+                whitelist: ["is-animating", "webp", "no-webp"]
+            }
+        }
+    });
+}
 
 mix.disableNotifications();
